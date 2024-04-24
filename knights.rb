@@ -1,3 +1,5 @@
+require 'pry-byebug'
+
 chess_board = Array.new(8){Array.new(8)}
 moves = [[1, 2], [2, 1], [2, -1], [1, -2], 
         [-1, -2], [-2, -1], [-2, 1], [-1, 2]]
@@ -9,15 +11,16 @@ def knight_moves(start, goal)
     visited = {}
     node_before = {start => nil}
     
-    while queue.empty?
+    while !queue.empty?
         current = queue.shift # [0, 0]
+        binding.pry
 
         return build_path(current, node_before) if current == goal
 
         moves.each do |x, y|
             next_node = [x + current[0] , y + current[1]]
 
-            if next_node.is_valid?(next_node) && !visited.include?(next_node) # true, false 
+            if is_valid?(next_node, chess_board) && !visited.include?(next_node) # corrected method name
                 visited.add(next_node)
                 node_before[next_node] = current
                 queue.push(next_node)
@@ -46,7 +49,8 @@ def build_path(node, node_before)
     path
 end
 
-p knight_moves([0,0], [3,3])
+binding.pry
+knight_moves([0,0], [3,3])
 
 =begin
 
